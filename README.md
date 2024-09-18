@@ -1,6 +1,6 @@
-# Local Weather App
+# Local Weather and Nearest Airport App
 
-This app provides you with the current weather based on your location. It interacts with the backend to fetch the weather data using the 'call_api' event.
+This app provides you with the current weather based on your location and displays the closest airport to you. It interacts with the backend to fetch weather data and airport information using the 'call_api' event.
 
 ## User Guide
 
@@ -11,26 +11,32 @@ This app provides you with the current weather based on your location. It intera
    - Upon loading, the app will prompt you to allow access to your location.
    - Click **"Allow"** to grant permission.
 
-### 3. Viewing the Weather Information
+### 3. Viewing the Weather and Nearest Airport Information
    - The app will fetch your geographic coordinates.
-   - It will communicate with the backend to retrieve the current weather data.
+   - It will communicate with the backend to retrieve the current weather data and the nearest airport.
    - A loading indicator will be displayed while fetching the data.
 
-### 4. Weather Details Displayed
+### 4. Information Displayed
    - Once the data is retrieved, the app will display the following information:
-     1. **Temperature**
-     2. **Feels Like Temperature**
-     3. **Humidity**
-     4. **Wind Speed and Direction**
-     5. **Cloud Coverage**
-     6. **Maximum and Minimum Temperatures**
+     1. **Current Weather**
+        - Temperature
+        - Feels Like Temperature
+        - Humidity
+        - Wind Speed and Direction
+        - Cloud Coverage
+        - Maximum and Minimum Temperatures
+     2. **Nearest Airport**
+        - Airport Name
+        - Airport Code (IATA and ICAO)
+        - City and Country
+        - Distance from your location
 
-### 5. Refreshing the Weather Data
-   - Click the **"Refresh"** button to update the weather information.
-   - The app will re-fetch your location and retrieve the latest weather data.
+### 5. Refreshing the Data
+   - Click the **"Refresh"** button to update the weather and airport information.
+   - The app will re-fetch your location and retrieve the latest data.
 
 ### 6. Handling Errors
-   - If there's an error retrieving your location or fetching the weather data, an error message will be displayed.
+   - If there's an error retrieving your location or fetching the data, an error message will be displayed.
    - You can click **"Try Again"** to retry the operation.
 
 ### 7. Responsive Design
