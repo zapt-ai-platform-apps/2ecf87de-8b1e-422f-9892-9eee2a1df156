@@ -1,0 +1,20 @@
+{
+  "name": "local-weather-app",
+  "version": "1.0.0",
+  "description": "An app that displays the weather based on your current location",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "solid-js": "^1.6.10"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7",
+    "vite": "^4.1.4",
+    "vite-plugin-solid": "^2.5.0"
+  }
+}
