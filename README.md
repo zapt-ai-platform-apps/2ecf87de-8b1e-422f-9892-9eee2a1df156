@@ -1,34 +1,39 @@
 # Local Weather App
 
-This app provides you with the current weather based on your current location. Follow these steps to use the app:
+This app provides you with the current weather based on your location. It interacts with the backend to fetch the weather data using the 'call_api' event.
 
-1. **Accessing the App:**
-   - Open the app in your browser.
+## User Guide
 
-2. **Grant Location Permission:**
-   - The app will prompt you to allow access to your location.
-   - Click "Allow" to grant permission.
+### 1. Accessing the App
+   - Open the app in your web browser.
 
-3. **Viewing the Weather:**
-   - Once location permission is granted, the app will fetch your current geographic coordinates.
-   - It will display a loading indicator while fetching the weather information.
+### 2. Granting Location Permission
+   - Upon loading, the app will prompt you to allow access to your location.
+   - Click **"Allow"** to grant permission.
 
-4. **Weather Information Displayed:**
-   - The app will display the current weather conditions, including:
-     - **Temperature**
-     - **Feels Like Temperature**
-     - **Humidity**
-     - **Wind Speed and Direction**
-     - **Cloud Coverage**
-     - **Maximum and Minimum Temperatures**
+### 3. Viewing the Weather Information
+   - The app will fetch your geographic coordinates.
+   - It will communicate with the backend to retrieve the current weather data.
+   - A loading indicator will be displayed while fetching the data.
 
-5. **Error Handling:**
-   - If there's an error fetching your location or the weather data, an error message will be displayed.
+### 4. Weather Details Displayed
+   - Once the data is retrieved, the app will display the following information:
+     1. **Temperature**
+     2. **Feels Like Temperature**
+     3. **Humidity**
+     4. **Wind Speed and Direction**
+     5. **Cloud Coverage**
+     6. **Maximum and Minimum Temperatures**
 
-6. **Refreshing the Data:**
-   - You can click the "Refresh" button to fetch the latest weather information.
+### 5. Refreshing the Weather Data
+   - Click the **"Refresh"** button to update the weather information.
+   - The app will re-fetch your location and retrieve the latest weather data.
 
-7. **Responsive Design:**
-   - The app is designed to be responsive and user-friendly on all screen sizes.
+### 6. Handling Errors
+   - If there's an error retrieving your location or fetching the weather data, an error message will be displayed.
+   - You can click **"Try Again"** to retry the operation.
 
-**Note:** For the app to function properly, please ensure that your browser has location services enabled, and you allow the app to access your location.
+### 7. Responsive Design
+   - The app is optimized for all screen sizes and provides a user-friendly experience on both desktop and mobile devices.
+
+**Note:** Please ensure that your browser has location services enabled and that you allow the app to access your location for it to function properly.

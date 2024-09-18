@@ -1,29 +1,28 @@
 import { createSignal, onMount, Show } from 'solid-js';
+import { supabase, createEvent } from './supabaseClient';
 
 function App() {
   const [weatherData, setWeatherData] = createSignal(null);
   const [loading, setLoading] = createSignal(true);
   const [error, setError] = createSignal(null);
 
-  const API_KEY = import.meta.env.VITE_PUBLIC_WEATHER_API_KEY;
+  const API_ID = 'ea764266-2a18-41c9-b7b0-dac80fed3797';
 
   const fetchWeather = async (latitude, longitude) => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch(`https://api.api-ninjas.com/v1/weather?lat=${latitude}&lon=${longitude}`, {
-        headers: {
-          'X-Api-Key': API_KEY
-        }
+      const result = await createEvent('call_api', {
+        api_id: API_ID,
+        instructions: `Fetch the current weather data for latitude: ${latitude}, longitude: ${longitude} using the Weather API.`
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch weather data');
+      if (!result) {
+        throw new Error('Failed to get weather data from backend.');
       }
 
-      const data = await response.json();
-      setWeatherData(data);
+      setWeatherData(result);
     } catch (err) {
       setError(err.message);
     } finally {
