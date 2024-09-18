@@ -50,55 +50,20 @@ function App() {
 
       const airportResult = await createEvent('call_api', {
         api_id: AIRPORT_API_ID,
-        instructions: `Find airports near latitude: ${latitude}, longitude: ${longitude} using the Airports API. Return a list of airports with their details.`
+        instructions: `Find airports in the city: ${city} using the Airports API. Return a list of airports with their details.`
       });
 
       if (!airportResult || airportResult.length === 0) {
         // No airports found
         setAirportData(null);
       } else {
-        // Compute distance to each airport and find the closest one
-        const airportsWithDistance = airportResult.map((airport) => {
-          const distance = calculateDistance(
-            latitude,
-            longitude,
-            parseFloat(airport.latitude),
-            parseFloat(airport.longitude)
-          );
-          return { ...airport, distance };
-        });
-
-        // Sort airports by distance
-        airportsWithDistance.sort((a, b) => a.distance - b.distance);
-
-        // Set the closest airport
-        setAirportData(airportsWithDistance[0]);
+        setAirportData(airportResult[0]);
       }
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  };
-
-  const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    // Earth radius in kilometers
-    const R = 6371;
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLon = ((lon2 - lon1) * Math.PI) / 180;
-
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    const distance = R * c; // in kilometers
-
-    return distance;
   };
 
   const getLocation = () => {
@@ -151,7 +116,6 @@ function App() {
         // No airports found
         setAirportData(null);
       } else {
-        // We don't have coordinates, so we can't calculate distance
         setAirportData(airportResult[0]);
       }
     } catch (err) {
@@ -244,7 +208,7 @@ function App() {
               <p class="text-center text-xl font-semibold">Nearest Airport</p>
               <Show
                 when={airportData()}
-                fallback={<p class="text-center text-lg">No airports found in your area.</p>}
+                fallback={<p class="text-center text-lg">No airports found in your city.</p>}
               >
                 <div>
                   <div class="flex justify-between">
@@ -267,12 +231,6 @@ function App() {
                     <span>ICAO Code:</span>
                     <span>{airportData().icao}</span>
                   </div>
-                  <Show when={airportData().distance}>
-                    <div class="flex justify-between">
-                      <span>Distance:</span>
-                      <span>{airportData().distance.toFixed(2)} km</span>
-                    </div>
-                  </Show>
                 </div>
               </Show>
             </div>
