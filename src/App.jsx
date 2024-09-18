@@ -50,29 +50,30 @@ function App() {
 
       const airportResult = await createEvent('call_api', {
         api_id: AIRPORT_API_ID,
-        instructions: `Find airports in the city: ${city} using the Airports API. Return a list of airports with their details.`
+        instructions: `Find airports near latitude: ${latitude}, longitude: ${longitude} using the Airports API. Return a list of airports with their details.`
       });
 
       if (!airportResult || airportResult.length === 0) {
-        throw new Error('Failed to get airport data from backend.');
+        // No airports found
+        setAirportData(null);
+      } else {
+        // Compute distance to each airport and find the closest one
+        const airportsWithDistance = airportResult.map((airport) => {
+          const distance = calculateDistance(
+            latitude,
+            longitude,
+            parseFloat(airport.latitude),
+            parseFloat(airport.longitude)
+          );
+          return { ...airport, distance };
+        });
+
+        // Sort airports by distance
+        airportsWithDistance.sort((a, b) => a.distance - b.distance);
+
+        // Set the closest airport
+        setAirportData(airportsWithDistance[0]);
       }
-
-      // Compute distance to each airport and find the closest one
-      const airportsWithDistance = airportResult.map((airport) => {
-        const distance = calculateDistance(
-          latitude,
-          longitude,
-          parseFloat(airport.latitude),
-          parseFloat(airport.longitude)
-        );
-        return { ...airport, distance };
-      });
-
-      // Sort airports by distance
-      airportsWithDistance.sort((a, b) => a.distance - b.distance);
-
-      // Set the closest airport
-      setAirportData(airportsWithDistance[0]);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -147,11 +148,12 @@ function App() {
       });
 
       if (!airportResult || airportResult.length === 0) {
-        throw new Error('Failed to get airport data from backend.');
+        // No airports found
+        setAirportData(null);
+      } else {
+        // We don't have coordinates, so we can't calculate distance
+        setAirportData(airportResult[0]);
       }
-
-      // We don't have coordinates, so we can't calculate distance
-      setAirportData(airportResult[0]);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -183,7 +185,7 @@ function App() {
               />
             </div>
             <button
-              class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer disabled:opacity-50 cursor-pointer"
+              class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mt-2 disabled:opacity-50 cursor-pointer"
               onClick={handleCitySubmit}
               disabled={loading()}
             >
@@ -191,7 +193,7 @@ function App() {
             </button>
           </Show>
           <button
-            class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer mt-4 disabled:opacity-50 cursor-pointer"
+            class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mt-4 disabled:opacity-50 cursor-pointer"
             onClick={getLocation}
             disabled={loading()}
           >
@@ -238,40 +240,45 @@ function App() {
               </div>
             </Show>
 
-            <Show when={airportData()}>
-              <div class="space-y-4 mt-6">
-                <p class="text-center text-xl font-semibold">Nearest Airport</p>
-                <div class="flex justify-between">
-                  <span>Airport Name:</span>
-                  <span>{airportData().name}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>City:</span>
-                  <span>{airportData().city}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>Country:</span>
-                  <span>{airportData().country}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>IATA Code:</span>
-                  <span>{airportData().iata}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>ICAO Code:</span>
-                  <span>{airportData().icao}</span>
-                </div>
-                <Show when={airportData().distance}>
+            <div class="space-y-4 mt-6">
+              <p class="text-center text-xl font-semibold">Nearest Airport</p>
+              <Show
+                when={airportData()}
+                fallback={<p class="text-center text-lg">No airports found in your area.</p>}
+              >
+                <div>
                   <div class="flex justify-between">
-                    <span>Distance:</span>
-                    <span>{airportData().distance.toFixed(2)} km</span>
+                    <span>Airport Name:</span>
+                    <span>{airportData().name}</span>
                   </div>
-                </Show>
-              </div>
-            </Show>
+                  <div class="flex justify-between">
+                    <span>City:</span>
+                    <span>{airportData().city}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Country:</span>
+                    <span>{airportData().country}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>IATA Code:</span>
+                    <span>{airportData().iata}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>ICAO Code:</span>
+                    <span>{airportData().icao}</span>
+                  </div>
+                  <Show when={airportData().distance}>
+                    <div class="flex justify-between">
+                      <span>Distance:</span>
+                      <span>{airportData().distance.toFixed(2)} km</span>
+                    </div>
+                  </Show>
+                </div>
+              </Show>
+            </div>
 
             <button
-              class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer mt-6 disabled:opacity-50 cursor-pointer"
+              class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mt-6 disabled:opacity-50 cursor-pointer"
               onClick={getLocation}
               disabled={loading()}
             >
